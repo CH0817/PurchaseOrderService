@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="tw.com.dao.PurchaseQuantityMapper">
+    <resultMap id="BaseResultMap" type="tw.com.dao.model.PurchaseQuantity">
+        <result column="purchase_form_id" property="purchaseFormId" jdbcType="VARCHAR" />
+        <result column="product_id" property="productId" jdbcType="VARCHAR" />
+        <result column="quantity" property="quantity" jdbcType="INTEGER" />
+    </resultMap>
+    <sql id="joinProductList">
+        pq.purchase_form_id purchaseFormId, pq.product_id productId, pq.quantity quantity, p.name productName
+    </sql>
+    <sql id="joinProductForm">
+        FROM purchase_quantity pq, product p
+    </sql>
+    <insert id="insert" parameterType="tw.com.dao.model.PurchaseQuantity">
+        insert into purchase_quantity
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="purchaseFormId != null">
+                purchase_form_id,
+            </if>
+            <if test="productId != null">
+                product_id,
+            </if>
+            <if test="quantity != null">
+                quantity,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="purchaseFormId != null">
+                #{purchaseFormId,jdbcType=VARCHAR},
+            </if>
+            <if test="productId != null">
+                #{productId,jdbcType=VARCHAR},
+            </if>
+            <if test="quantity != null">
+                #{quantity,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <delete id="deleteByPurchaseForm" parameterType="java.lang.String">
+        DELETE FROM purchase_quantity
+        WHERE purchase_form_id = #{purchaseFormId,jdbcType=VARCHAR}
+    </delete>
+    <select id="findByPurchaseForm" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        <include refid="joinProductList" />
+        <include refid="joinProductForm" />
+        WHERE pq.purchase_form_id = #{purchaseFormId,jdbcType=VARCHAR}
+        AND p.id = pq.product_id
+    </select>
+</mapper>

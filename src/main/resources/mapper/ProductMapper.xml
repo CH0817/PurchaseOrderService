@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="tw.com.dao.ProductMapper">
+    <resultMap id="BaseResultMap" type="tw.com.dao.model.Product">
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+        <result column="modify_date" property="modifyDate" jdbcType="TIMESTAMP" />
+        <result column="product_id" property="productId" jdbcType="VARCHAR" />
+        <result column="user_id" property="userId" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="price" property="price" jdbcType="DECIMAL" />
+        <result column="cost" property="cost" jdbcType="DECIMAL" />
+        <result column="remove" property="remove" jdbcType="INTEGER" />
+        <result column="reserve" property="reserve" jdbcType="INTEGER" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, create_date, modify_date, product_id, user_id, name, price, cost, remove, reserve
+    </sql>
+    <sql id="default_order_by">
+        order by modify_date desc, create_date desc, name
+    </sql>
+    <insert id="insert" parameterType="tw.com.dao.model.Product">
+        insert into product
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="modifyDate != null">
+                modify_date,
+            </if>
+            <if test="productId != null">
+                product_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="price != null">
+                price,
+            </if>
+            <if test="cost != null">
+                cost,
+            </if>
+            <if test="remove != null">
+                remove,
+            </if>
+            <if test="reserve != null">
+                reserve,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifyDate != null">
+                #{modifyDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="productId != null">
+                #{productId,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="price != null">
+                #{price,jdbcType=DECIMAL},
+            </if>
+            <if test="cost != null">
+                #{cost,jdbcType=DECIMAL},
+            </if>
+            <if test="remove != null">
+                #{remove,jdbcType=INTEGER},
+            </if>
+            <if test="reserve != null">
+                #{reserve,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <delete id="delete" parameterType="java.lang.String">
+        delete from product
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+    <update id="update" parameterType="tw.com.dao.model.Product">
+        update product
+        <set>
+            <if test="createDate != null">
+                create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifyDate != null">
+                modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="productId != null">
+                product_id = #{productId,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="price != null">
+                price = #{price,jdbcType=DECIMAL},
+            </if>
+            <if test="cost != null">
+                cost = #{cost,jdbcType=DECIMAL},
+            </if>
+            <if test="remove != null">
+                remove = #{remove,jdbcType=INTEGER},
+            </if>
+            <if test="reserve != null">
+                remove = #{reserve,jdbcType=INTEGER},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <select id="findById" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM product
+        WHERE remove = 0
+        AND id = #{id,jdbcType=VARCHAR}
+        AND user_id = #{userId,jdbcType=VARCHAR}
+    </select>
+    <select id="findByIds" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM product
+        WHERE remove = 0 AND id IN
+        <foreach collection="ids" item="id" index="index" separator="," open="(" close=")">
+            #{id,jdbcType=VARCHAR}
+        </foreach>
+        AND user_id = #{userId,jdbcType=VARCHAR}
+        <include refid="default_order_by" />
+    </select>
+    <select id="findAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM product WHERE remove = 0 AND user_id = #{userId,jdbcType=VARCHAR}
+        <include refid="default_order_by" />
+    </select>
+    <select id="findByCondition" resultMap="BaseResultMap" parameterType="tw.com.dao.model.Product">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM product WHERE remove = 0
+        <if test="createDate != null">
+            AND create_date = #{createDate,jdbcType=TIMESTAMP}
+        </if>
+        <if test="modifyDate != null">
+            AND modify_date = #{modifyDate,jdbcType=TIMESTAMP}
+        </if>
+        <if test="productId != null">
+            AND product_id = #{productId,jdbcType=VARCHAR}
+        </if>
+        <if test="userId != null">
+            AND user_id = #{userId,jdbcType=VARCHAR}
+        </if>
+        <if test="name != null">
+            AND name = #{name,jdbcType=VARCHAR}
+        </if>
+        <if test="price != null">
+            AND price = #{price,jdbcType=DECIMAL}
+        </if>
+        <if test="cost != null">
+            AND cost = #{cost,jdbcType=DECIMAL}
+        </if>
+        <include refid="default_order_by" />
+    </select>
+    <select id="findBySupplier" resultMap="BaseResultMap">
+        SELECT p.*
+        FROM product p, supplier_product sp
+        WHERE sp.supplier_id IN
+        <foreach collection="supplierIds" item="id" index="index" separator="," open="(" close=")">
+            #{id,jdbcType=VARCHAR}
+        </foreach>
+        AND p.id = sp.product_id
+        AND p.user_id = #{userId,jdbcType=VARCHAR}
+        AND sp.user_id = #{userId,jdbcType=VARCHAR}
+    </select>
+</mapper>

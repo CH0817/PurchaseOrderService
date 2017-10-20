@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jaxws="http://cxf.apache.org/jaxws"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans.xsd
+          http://cxf.apache.org/jaxws
+          http://cxf.apache.org/schemas/jaxws.xsd">
+    <import resource="classpath:META-INF/cxf/cxf.xml" />
+    <import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+    <jaxws:endpoint id="customerWebService" implementor="tw.com.web.service.impl.CustomerWebServiceImpl"
+                    address="/CustomerService" />
+    <jaxws:endpoint id="orderFormWebService" implementor="tw.com.web.service.impl.OrderFormWebServiceImpl"
+                    address="/OrderFormService" />
+    <jaxws:endpoint id="productWebService" implementor="tw.com.web.service.impl.ProductWebServiceImpl"
+                    address="/ProductService" />
+    <jaxws:endpoint id="purchaseFormWebService" implementor="tw.com.web.service.impl.PurchaseFormWebServiceImpl"
+                    address="/PurchaseFormService" />
+    <jaxws:endpoint id="supplierWebService" implementor="tw.com.web.service.impl.SupplierWebServiceImpl"
+                    address="/SupplierService" />
+    <jaxws:endpoint id="userWebService" implementor="tw.com.web.service.impl.UserWebServiceImpl"
+                    address="/UserService" />
+</beans>

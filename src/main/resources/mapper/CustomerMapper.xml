@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="tw.com.dao.CustomerMapper">
+    <resultMap id="BaseResultMap" type="tw.com.dao.model.Customer">
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+        <result column="modify_date" property="modifyDate" jdbcType="TIMESTAMP" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="address" property="address" jdbcType="VARCHAR" />
+        <result column="email" property="email" jdbcType="VARCHAR" />
+        <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+        <result column="user_id" property="userId" jdbcType="VARCHAR" />
+        <result column="remove" property="remove" jdbcType="INTEGER" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, create_date, modify_date, name, address, email, mobile, user_id, remove
+    </sql>
+    <sql id="default_order_by">
+        ORDER BY modify_date DESC , create_date DESC, name
+    </sql>
+    <insert id="insert" parameterType="tw.com.dao.model.Customer">
+        insert into customer
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="modifyDate != null">
+                modify_date,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="mobile != null">
+                mobile,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="remove != null">
+                remove,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifyDate != null">
+                #{modifyDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null">
+                #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="remove != null">
+                #{remove,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <delete id="delete" parameterType="java.lang.String">
+        delete from customer
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+    <update id="update" parameterType="tw.com.dao.model.Customer">
+        UPDATE customer
+        <set>
+            <if test="createDate != null">
+                create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifyDate != null">
+                modify_date = #{modifyDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                address = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                email = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null">
+                mobile = #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="remove != null">
+                remove = #{remove,jdbcType=INTEGER},
+            </if>
+        </set>
+        WHERE id = #{id,jdbcType=VARCHAR}
+    </update>
+    <select id="findById" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from customer
+        where remove = 0 AND id = #{id,jdbcType=VARCHAR} AND user_id = #{userId,jdbcType=VARCHAR}
+    </select>
+    <select id="findByIds" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM customer
+        WHERE remove = 0 AND id IN
+        <foreach collection="ids" item="id" index="index" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+        AND user_id = #{userId,jdbcType=VARCHAR}
+        <include refid="default_order_by" />
+    </select>
+    <select id="findAll" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM customer WHERE remove = 0 AND user_id = #{userId,jdbcType=VARCHAR}
+        <include refid="default_order_by" />
+    </select>
+    <select id="findByCondition" resultMap="BaseResultMap" parameterType="tw.com.dao.model.Customer">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM customer WHERE remove = 0
+        <if test="createDate != null">
+            AND create_date = #{createDate,jdbcType=TIMESTAMP}
+        </if>
+        <if test="modifyDate != null">
+            AND modify_date = #{modifyDate,jdbcType=TIMESTAMP}
+        </if>
+        <if test="name != null">
+            AND name = #{name,jdbcType=VARCHAR}
+        </if>
+        <if test="address != null">
+            AND address = #{address,jdbcType=VARCHAR}
+        </if>
+        <if test="email != null">
+            AND email = #{email,jdbcType=VARCHAR}
+        </if>
+        <if test="mobile != null">
+            AND mobile = #{mobile,jdbcType=VARCHAR}
+        </if>
+        <if test="userId != null">
+            AND user_id = #{userId,jdbcType=VARCHAR}
+        </if>
+        <include refid="default_order_by" />
+    </select>
+</mapper>
