@@ -3,10 +3,6 @@
         "http://java.sun.com/dtd/web-app_2_3.dtd" >
 <web-app>
     <display-name>Purchase Order Service</display-name>
-    <context-param>
-        <param-name>spring.profiles.active</param-name>
-        <param-value>${spring.profiles.active}</param-value>
-    </context-param>
     <!-- spring config -->
     <context-param>
         <param-name>contextConfigLocation</param-name>
